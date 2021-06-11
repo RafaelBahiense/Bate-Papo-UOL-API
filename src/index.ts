@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 
-import {Data, Participants, User, JoinMessage, LeftMessage, UserMessage} from "./types";
-import {fileLoader, fileWrite} from "./fileHandler";
+import {Participants} from "./types";
+import {fileLoader} from "./fileHandler";
 import join from "./join";
 import status from "./status";
 import getParticipants from "./getParticipants";
@@ -24,9 +24,9 @@ app.post("/participants", (req, res) => join(req, res, data, participants));
 
 app.post("/status", (req, res) => status(req, res, participants));
 
-app.get("/participants", (req, res) => getParticipants(req, res, participants));
-
 app.post("/messages", (req, res) => sendMessage(req, res, data, participants));
+
+app.get("/participants", (req, res) => getParticipants(req, res, participants));
 
 app.get("/messages", (req, res) => getMessages(req, res, data, participants))
 

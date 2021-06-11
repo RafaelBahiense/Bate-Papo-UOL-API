@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { stripHtml } from "string-strip-html";
 
 import {Participants} from "./types";
 

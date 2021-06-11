@@ -14,7 +14,7 @@ export interface User {
     lastOnline: number;
 }
 
-interface Message {
+export interface Message {
     from: string;
     to: string;
     text: string;
