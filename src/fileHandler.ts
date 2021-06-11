@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import {Data} from "./types";
+
 const defaultData: Data = {
     messages: []
 };

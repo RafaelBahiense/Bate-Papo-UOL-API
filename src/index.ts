@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import readline from 'readline';
 
-import {fileLoader, fileWrite} from "./FileHandler";
+import {fileLoader, fileWrite} from "./fileHandler";
+import {Participants, User, JoinMessage} from "./types";
 
 const PORT: number = (process.env.PORT as unknown) as number || 4000;
 
@@ -20,8 +21,11 @@ app.post("/participants", (req, res) => {
         res.status(209);
         res.send("User already online!");
     } else {
+        const joinMessage = new JoinMessage(user.name);
         user.lastOnline = Date.now()
         participants.push(user);
+        data.messages.push(joinMessage);
+        fileWrite(data);
         res.status(201);
         res.send("Login successful");
     }
