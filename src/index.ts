@@ -39,6 +39,17 @@ app.post("/status", (req, res) => {
     }
 })
 
+app.get("/participants", (req, res) => {
+    const isOnline = participants.findIndex((participant) => req.header('User') === participant.name);
+    if (isOnline >= 0) {
+        res.status(200);
+        res.send(participants);
+    } else {
+        res.status(401);
+        res.send("User is not online");
+    }
+})
+
 
 
 app.listen(PORT, () => {
