@@ -33,7 +33,7 @@ const schemaUserHeader = Joi.string()
     .required()
     .trim();
 
-export default function sendMessage(req: Request, res: Response, data: Data, participants: Participants) {
+export default function sendMessage(req: Request, res: Response, data: Data, participants: Participants): void {
     const from: string = stripHtml(req.header('User') || "").result;
 
     const isValidUserHeader = schemaUserHeader.validate(from);
