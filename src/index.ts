@@ -3,7 +3,7 @@ import cors from 'cors';
 import readline from 'readline';
 
 import {fileLoader, fileWrite} from "./fileHandler";
-import {Participants, User, JoinMessage, LeftMessage} from "./types";
+import {Participants, User, JoinMessage, LeftMessage, UserMessage} from "./types";
 
 const PORT: number = (process.env.PORT as unknown) as number || 4000;
 
@@ -48,7 +48,39 @@ app.get("/participants", (req, res) => {
     }
 })
 
+app.post("/messages", (req, res) => {
+    const from = req.header('User');
+    const isOnline = participants.findIndex((participant) => from === participant.name);
+    if (isOnline >= 0) {
+        const userMessage = new UserMessage(from, req.body.to, req.body.type, req.body.text);
+        data.messages.push(userMessage);
+        fileWrite(data);
+        res.status(200).send("ok");
+    } else {
+        res.status(401).send("User is not online");
+    }
+})
 
+app.get("/messages", (req, res) => {
+    const from = req.header('User');
+    const isOnline = participants.findIndex((participant) => from === participant.name);
+    if (isOnline >= 0) {
+        const messages = data.messages.filter((message) => {
+                                                            if("Todos" === message.to){
+                                                                return true;
+                                                            } else if (from === message.from) {
+                                                                return true;
+                                                            } else if (from === message.to) {
+                                                                return true;
+                                                            } else {
+                                                                return false;
+                                                            }
+                                                        })
+        res.status(200).send(messages);
+    } else {
+        res.status(401).send("User is not online");
+    }
+})
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

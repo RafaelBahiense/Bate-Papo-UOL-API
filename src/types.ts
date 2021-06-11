@@ -7,16 +7,6 @@ export interface Data {
     messages: (JoinMessage)[];
 }
 
-interface message {
-    message: {
-        from: string;
-        to: string;
-        text: string;
-        type: string;
-        time: string;
-    }
-}
-
 export type Participants = User[]
 
 export interface User {
@@ -32,26 +22,52 @@ interface Message {
     time: string;
 }
 
-export class JoinMessage implements Message {
-        from; to; text; type; time;
+abstract class BaseMessage {
+    time;
         
-        constructor(from: string) {
-            this.from = from;
-            this.to = 'Todos';
-            this.text = 'entra na sala...';
-            this.type = 'status';
-            this.time = dayjs().format("HH:mm:ss");
-        }
+    constructor() {
+        this.time = dayjs().format("HH:mm:ss");
+    }
 }
 
-export class LeftMessage implements Message {
-    from; to; text; type; time;
+abstract class StatusMessage extends BaseMessage{
+    to; type;
+        
+    constructor() {
+        super();
+        this.to = 'Todos';
+        this.type = 'status';
+    }
+}
+
+export class JoinMessage extends StatusMessage implements Message {
+    from; text;
     
     constructor(from: string) {
+        super();
         this.from = from;
-        this.to = 'Todos';
+        this.text = 'entra na sala...';
+    }
+}
+
+export class LeftMessage extends StatusMessage implements Message {
+    from; text;
+    
+    constructor(from: string) {
+        super();
+        this.from = from;
         this.text = 'sai da sala...';
-        this.type = 'status';
-        this.time = dayjs().format("HH:mm:ss");
+    }
+}
+
+export class UserMessage extends BaseMessage {
+    from; to; type; text;
+        
+    constructor(from: string, to: string, type: string, text: string) {
+        super();
+        this.from = from;
+        this.to = to;
+        this.type = type;
+        this.text = text;
     }
 }
