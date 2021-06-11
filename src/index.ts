@@ -27,6 +27,18 @@ app.post("/participants", (req, res) => {
     }
 })
 
+app.post("/status", (req, res) => {
+    const isOnline = participants.findIndex((participant) => req.header('User') === participant.name);
+    if (isOnline >= 0) {
+        participants[isOnline].lastOnline = Date.now();
+        res.status(200);
+        res.send("Login refreshed");
+    } else {
+        res.status(401);
+        res.send("User is not online");
+    }
+})
+
 
 
 app.listen(PORT, () => {
