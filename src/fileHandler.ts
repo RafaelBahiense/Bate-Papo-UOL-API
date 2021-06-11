@@ -8,7 +8,12 @@ const defaultData: Data = {
 
 export function fileLoader(): Data {
     if (fs.existsSync("./data/data.json")) {
-        return {...JSON.parse(fs.readFileSync('./data/data.json',{encoding:'utf8', flag:'r'}))}
+        if(fs.readFileSync('./data/data.json',{encoding:'utf8', flag:'r'})) {
+            return {...JSON.parse(fs.readFileSync('./data/data.json',{encoding:'utf8', flag:'r'}))}
+        } else {
+            fs.writeFileSync( './data/data.json', JSON.stringify(defaultData), { encoding: "utf8",flag: "w"});
+            return defaultData;
+        }
     } else {
         fs.writeFileSync( './data/data.json', JSON.stringify(defaultData), { encoding: "utf8",flag: "w"});
         return defaultData;

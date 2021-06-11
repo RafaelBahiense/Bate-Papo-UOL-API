@@ -52,6 +52,6 @@ export class LeftMessage implements Message {
         this.to = 'Todos';
         this.text = 'sai da sala...';
         this.type = 'status';
-        this.time = dayjs().format("HH-mm-ss");
+        this.time = dayjs().format("HH:mm:ss");
     }
 }
